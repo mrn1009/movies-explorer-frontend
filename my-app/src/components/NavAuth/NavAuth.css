@@ -1,0 +1,48 @@
+.nav-auth {
+  display: flex;
+  align-items: center;
+}
+
+.nav-auth__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-auth__link {
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.33;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all .3s ease;
+}
+
+.nav-auth__link:hover {
+  opacity: .7;
+}
+
+.nav-auth__link_type_signin {
+  background-color: #3DDC84;
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 400px) {
+  .nav-auth__list {
+    gap: 14px;
+  }
+
+  .nav-auth__link {
+    font-size: 10px;
+    line-height: 1.6;
+  }
+
+  .nav-auth__link_type_signin {
+    padding: 5px 12px;
+  }
+}
