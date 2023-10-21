@@ -14,7 +14,7 @@ const MoviesCard = ({ card }) => {
   return (
       <article className="card">
         <div className="card__description">
-          <h3 className="card__title">{card.title}</h3>
+          <h2 className="card__title">{card.title}</h2>
           <p className="card__duration">{card.duration}</p>
         </div>
         <img className="card__poster" src={card.image} alt={card.title} />

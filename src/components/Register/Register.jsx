@@ -25,8 +25,10 @@ const Register = () => {
         name='name'
         title='Имя'
         type='text'
+        placeholder="Введите имя"
         required
-        minLength={3}
+        minLength={2}
+        maxLength={40}
       />
       <FormInput
         value={values.email}
@@ -35,6 +37,7 @@ const Register = () => {
         name='email'
         title='E-mail'
         type='email'
+        placeholder="Введите email"
         pattern={EMAIL_PATTERN}
         required
       />
@@ -45,7 +48,9 @@ const Register = () => {
         name='password'
         title='Пароль'
         type='password'
+        placeholder="Введите пароль"
         minLength={6}
+        maxLength={40}
         required
       />
     </AuthPage >

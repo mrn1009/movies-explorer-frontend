@@ -25,6 +25,7 @@ const Login = () => {
         name='email'
         title='E-mail'
         type='email'
+        placeholder="Введите email"
         pattern={EMAIL_PATTERN}
         required
       />
@@ -35,7 +36,9 @@ const Login = () => {
         name='password'
         title='Пароль'
         type='password'
+        placeholder="Введите пароль"
         minLength={6}
+        maxLength={40}
         required
       />
     </AuthPage>

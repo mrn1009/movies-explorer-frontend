@@ -1,5 +1,6 @@
 import './Profile.css';
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -7,6 +8,8 @@ const Profile = () => {
   const [error, setError] = useState('');
 
   const [inEditMode, setInEditMode] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -43,6 +46,8 @@ const Profile = () => {
                 value={name}
                 onChange={handleNameChange}
                 required
+                minLength={2}
+                maxLength={40}
                 disabled={!inEditMode}
               ></input>
             </label>
@@ -82,6 +87,7 @@ const Profile = () => {
                 <button
                   className="profile__exit-button"
                   type="button"
+                  onClick={() => navigate("/")}
                 >
                   Выйти из аккаунта
                 </button>

@@ -97,6 +97,10 @@
   cursor: pointer;
 }
 
+.profile__edit-button:hover {
+  opacity: .7;
+}
+
 .profile__exit-button {
   margin: 16px 0 0;
   padding: 0;
@@ -109,6 +113,10 @@
   cursor: pointer;
 }
 
+.profile__exit-button:hover {
+  opacity: .7;
+}
+
 .profile__save-button {
   background-color: #4285F4;
   border-radius: 3px;
@@ -118,6 +126,10 @@
   color: #fff;
   height: 45px;
   cursor: pointer;
+}
+
+.profile__save-button:hover {
+  opacity: .8;
 }
 
 .profile__save-button:disabled {

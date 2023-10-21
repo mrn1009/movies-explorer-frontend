@@ -5,7 +5,7 @@ const SearchForm = () => {
     <section className="search-form" aria-label="Форма поиска">
       <form className="search-form__form">
         <div className="search-form__input-container">
-          <input className="search-form__input" type="text" placeholder="Фильм" />
+          <input className="search-form__input" type="text" placeholder="Фильм" required/>
           <button className="search-form__button">
             Поиск
           </button>
