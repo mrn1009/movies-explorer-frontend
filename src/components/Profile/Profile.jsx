@@ -1,94 +1,88 @@
 import './Profile.css';
-import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect  } from 'react';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import useFormValidation from '../../hooks/useFormValidation';
+import { EMAIL_PATTERN } from '../../utils/constants';
 
-const Profile = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-
+const Profile = ({ logout, onSubmit, error, successMessage, isLoader }) => {
+  const currentUser = useContext(CurrentUserContext);
+  const { values, errors, isValid, handleChange, resetForm } = useFormValidation();
   const [inEditMode, setInEditMode] = useState(false);
 
-  const navigate = useNavigate();
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSubmit(values);
+  }
 
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
-  }
   function handleEditClick() {
     setInEditMode(true);
   }
 
-  function handleProfileSubmit(e) {
-    e.preventDefault();
-    if (!email || !name) {
-      setError('Имя и email не могут быть пустыми');
-      return;
+  useEffect(() => {
+    if (currentUser) {
+      resetForm(currentUser, {}, true);
+      setTimeout(() => setInEditMode(false), 3000);
     }
+  }, [currentUser, resetForm]);
 
-    setError('');
-  }
+  const requireValidity = (!isValid || isLoader || (currentUser.name === values.name && currentUser.email === values.email));
+ 
   return (
     <main className='profile'>
       <section className='profile__inner'>
-        <h1 className="profile__title">Привет, Виталий!</h1>
-        <form className="profile__form" name="profile-form" noValidate onSubmit={handleProfileSubmit}>
+        <h1 className="profile__title">Привет, {currentUser && currentUser.name}!</h1>
+        <form className="profile__form" name="profile-form" noValidate onSubmit={handleSubmit}>
           <fieldset className='profile__form-fields'>
-            <label className="profile__input-label">
-              Имя
+            <div className="profile__field">
+              <label className="profile__input-label">
+                Имя
+              </label>
               <input
-                className="profile__input"
+                className={`profile__input ${errors.name && 'profile__input_error'}`}
+                name="name"
                 type="text"
                 placeholder="Имя"
-                name="name"
-                value={name}
-                onChange={handleNameChange}
-                required
-                minLength={2}
+                value={values.name || ''}
+                onChange={handleChange}
+                minLength={3}
                 maxLength={40}
                 disabled={!inEditMode}
+                required
               ></input>
-            </label>
-            <label className="profile__input-label">
-              E-mail
+              <span className="profile__input-error-message">{errors.name || ''}</span>
+            </div>
+            <div className="profile__field">
+              <label className="profile__input-label">
+                E-mail
+              </label>
               <input
-                className="profile__input"
+                className={`profile__input ${errors.email && 'profile__input_error'}`}
+                name="email"
                 type="email"
                 placeholder="Email"
-                name="email"
-                value={email}
-                onChange={handleEmailChange}
-                required
+                value={values.email || ''}
+                onChange={handleChange}
+                pattern={EMAIL_PATTERN}
                 disabled={!inEditMode}
+                required
               ></input>
-            </label>
+              <span className="profile__input-error-message">{errors.email || ''}</span>
+            </div>
           </fieldset>
           <div className="profile__buttons">
-            <p className="profile__message">{error}</p>
+            <p className={`profile__message ${error && 'profile__message_error'}`}>
+              {successMessage || error}
+            </p>
             {inEditMode ? (
-              <button
-                className="profile__save-button"
-                type="submit"
-                disabled={error !== ''}
-              >
+              <button className="profile__save-button" type="submit" disabled={requireValidity}>
                 Сохранить
               </button>
             ) : (
               <>
-                <button
-                  className="profile__edit-button"
-                  type="button"
-                  onClick={handleEditClick}
-                >
+                <button className="profile__edit-button" type="button" onClick={handleEditClick}>
                   Редактировать
                 </button>
-                <button
-                  className="profile__exit-button"
-                  type="button"
-                  onClick={() => navigate("/")}
-                >
+                <button className="profile__exit-button" type="button" onClick={logout}>
                   Выйти из аккаунта
                 </button>
               </>

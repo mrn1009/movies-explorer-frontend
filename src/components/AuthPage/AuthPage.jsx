@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Logo from '../Logo/Logo';
 import FormButton from '../FormButton/FormButton';
 
-const AuthPage = ({ children, type, onSubmit, isValid }) => {
+const AuthPage = ({ children, type, onSubmit, isValid, error, isLoader }) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,8 +35,8 @@ const AuthPage = ({ children, type, onSubmit, isValid }) => {
             {children}
           </fieldset>
           <div className="auth__button-wrapper">
-            <span className="auth__error-message"></span>
-            <FormButton disabled={!isValid}>
+            <span className="auth__error-message">{error}</span>
+            <FormButton disabled={!isValid || isLoader}>
               {texts.buttonText}
             </FormButton>
           </div>

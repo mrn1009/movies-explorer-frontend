@@ -4,11 +4,11 @@ import useFormValidation from '../../hooks/useFormValidation';
 import FormInput from '../FormInput/FormInput';
 import { EMAIL_PATTERN } from '../../utils/constants';
 
-const Login = () => {
+const Login = ({ onSubmit, error, isLoader }) => {
   const { values, errors, isValid, handleChange } = useFormValidation();
 
   function handleSubmit() {
-    // onSubmit(values);
+    onSubmit(values);
   }
   
   return (
@@ -16,11 +16,12 @@ const Login = () => {
       type={'login'}
       onSubmit={handleSubmit}
       isValid={isValid}
-      // error={error}
+      error={error}
+      isLoader={isLoader}
     >
       <FormInput
-        value={values.email}
-        error={errors.email}
+        value={values.email || ''}
+        error={errors.email || ''}
         onChange={handleChange}
         name='email'
         title='E-mail'
@@ -30,8 +31,8 @@ const Login = () => {
         required
       />
       <FormInput
-        value={values.password}
-        error={errors.password}
+        value={values.password || ''}
+        error={errors.password || ''}
         onChange={handleChange}
         name='password'
         title='Пароль'

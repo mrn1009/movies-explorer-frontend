@@ -4,11 +4,11 @@ import useFormValidation from '../../hooks/useFormValidation';
 import FormInput from '../FormInput/FormInput';
 import { EMAIL_PATTERN } from '../../utils/constants';
 
-const Register = () => {
+const Register = ({ onSubmit, error, isLoader }) => {
   const { values, errors, isValid, handleChange } = useFormValidation();
 
   function handleSubmit() {
-    // onSubmit(values);
+    onSubmit(values);
   } 
     
   return (
@@ -16,7 +16,8 @@ const Register = () => {
       type={'register'}
       isValid={isValid}
       onSubmit={handleSubmit}
-      // error={error}
+      error={error}
+      isLoader={isLoader}
     >
       <FormInput
         value={values.name}
