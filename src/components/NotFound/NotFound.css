@@ -34,20 +34,21 @@
   padding-bottom: 60px;
 }
 
-.not-found__link {
-  width: fit-content;
+.not-found__button {
   align-self: center;
-  text-decoration: none;
   color: #4285F4;
   font-weight: 400;
   font-size: 14px;
-  line-height: normal;
-  transition: opacity .5s linear;
+  border: none;
+  background-color: transparent;
+  line-height: 1.21;
+  transition: all .3s ease;
+  padding: 0;
+  cursor: pointer;
 }
 
-.not-found__link:hover {
-  opacity: .6;
-  cursor: pointer;
+.not-found__button:hover {
+  opacity: .8;
 }
 
 @media (max-width: 800px) {
@@ -55,7 +56,7 @@
     padding: 408px 0 222px;
   }
 
-  .not-found__link {
+  .not-found__button {
     margin-top: 184px;
   }
 }
@@ -76,7 +77,7 @@
     line-height: normal;
   }
 
-  .not-found__link {
+  .not-found__button {
     font-size: 12px;
     line-height: normal;
     margin-top: 284px;

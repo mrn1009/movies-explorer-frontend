@@ -2,7 +2,7 @@ import AuthPage from '../AuthPage/AuthPage';
 import './Register.css';
 import useFormValidation from '../../hooks/useFormValidation';
 import FormInput from '../FormInput/FormInput';
-import { EMAIL_PATTERN } from '../../utils/constants';
+// import { USER_NAME_PATTERN } from '../../utils/constants';
 
 const Register = ({ onSubmit, error, isLoader }) => {
   const { values, errors, isValid, handleChange } = useFormValidation();
@@ -29,7 +29,8 @@ const Register = ({ onSubmit, error, isLoader }) => {
         placeholder="Введите имя"
         required
         minLength={2}
-        maxLength={40}
+        maxLength={30}
+        // pattern={USER_NAME_PATTERN}
       />
       <FormInput
         value={values.email}
@@ -39,7 +40,7 @@ const Register = ({ onSubmit, error, isLoader }) => {
         title='E-mail'
         type='email'
         placeholder="Введите email"
-        pattern={EMAIL_PATTERN}
+        // pattern={EMAIL_PATTERN}
         required
       />
       <FormInput

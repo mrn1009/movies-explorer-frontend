@@ -1,11 +1,11 @@
 import './Popup.css';
 
-const Popup = ({ children, isPopupOpen }) => {
-    return (
-        <div className={`popup ${isPopupOpen && 'popup_visible'}`}>
-            {children}
-        </div>
-    )
+const Popup = ({ isError = true, isPopupOpen, message }) => {
+  return (
+    <div className={`popup ${isPopupOpen && 'popup_visible'} ${!isError && 'popup_success'}`}>
+      {message}
+    </div>
+  )
 }
 
 export default Popup;

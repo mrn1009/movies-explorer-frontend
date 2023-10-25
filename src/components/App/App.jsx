@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -15,6 +15,7 @@ import mainApi from '../../utils/MainApi';
 import Popup from '../Popup/Popup';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { SUCCESS_PROFILE_MESSAGE } from '../../utils/constants';
+import Preloader from '../Preloader/Preloader';
 
 function App() {
   const navigate = useNavigate();
@@ -25,10 +26,11 @@ function App() {
   const [successMessage, setSuccessMessage] = useState('');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoader, setIsLoader] = useState(false);
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     authUser();
-  }, []);
+  }, [loggedIn]);
 
   const handleRequestError = (err) => {
     setIsPopupOpen(true);
@@ -48,7 +50,6 @@ function App() {
       await mainApi.login(email, password);
       const user = await mainApi.getProfile();
       setCurrentUser(user);
-
       setLoggedIn(true);
       navigate('/movies', { replace: true });
     } catch (err) {
@@ -77,7 +78,6 @@ function App() {
       await mainApi.logOut();
       setCurrentUser(null);
       setLoggedIn(false);
-
       localStorage.clear();
       sessionStorage.clear();
       navigate('/', { replace: true });
@@ -92,16 +92,20 @@ function App() {
     setIsLoader(true);
     try {
       const user = await mainApi.getProfile();
-      if (user.email) {
+      if (user) {
         setLoggedIn(true);
         setCurrentUser(user);
+      } else {
+        setLoggedIn(false);
       }
     } catch (err) {
       if (err instanceof Error) {
-        setServerError(err);
+        setServerError(err.message);
+        setLoggedIn(false);
       }
     } finally {
       setIsLoader(false);
+      setLoad(true);
     }
   }
 
@@ -120,56 +124,64 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Header loggedIn={loggedIn} />
-        <Routes>
-          <Route exact path="/" element={<Main />} />
-          <Route path="/movies" element={
-            <ProtectedRoute
-              Component={Movies}
-              loggedIn={loggedIn}
-              isLoader={isLoader}
-            />
-          } />
-          <Route path="/saved-movies" element={
-            <ProtectedRoute
-              Component={SavedMovies}
-              loggedIn={loggedIn}
-              isLoader={isLoader}
-            />
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute
-              Component={Profile}
-              loggedIn={loggedIn}
-              logout={handleLogout}
-              onSubmit={handleUpdateProfile}
-              error={serverError}
-              successMessage={successMessage}
-              isLoader={isLoader}
-            />
-          } />
-          <Route path="/signup" element={
-            <Register
-              onSubmit={handleRegister}
-              error={serverError}
-              isLoader={isLoader}
-            />
-          } />
-          <Route path="/signin" element={
-            <Login
-              onSubmit={handleLogin}
-              error={serverError}
-              isLoader={isLoader}
-            />
-          } />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-        <Popup isPopupOpen={isPopupOpen}>{errorMessage}</Popup>
-      </div>
-    </CurrentUserContext.Provider>
+    <div className="page">
+      {!load ? (
+        <Preloader isOpen={isLoader} />
+      ) : (
+        <CurrentUserContext.Provider value={currentUser}>
+          <Header loggedIn={loggedIn} />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/movies" element={
+              <ProtectedRoute
+                Component={Movies}
+                loggedIn={loggedIn}
+                isLoader={isLoader}
+              />
+            } />
+            <Route path="/saved-movies" element={
+              <ProtectedRoute
+                Component={SavedMovies}
+                loggedIn={loggedIn}
+                isLoader={isLoader}
+              />
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute
+                Component={Profile}
+                loggedIn={loggedIn}
+                logout={handleLogout}
+                onSubmit={handleUpdateProfile}
+                error={serverError}
+                successMessage={successMessage}
+                isLoader={isLoader}
+              />
+            } />
+            <Route path="/signup" element={
+              !loggedIn ? (
+                <Register
+                  onSubmit={handleRegister}
+                  error={serverError}
+                  isLoader={isLoader}
+                />
+              ) : (<Navigate to="/" replace />)
+            } />
+            <Route path="/signin" element={
+              !loggedIn ? (
+                <Login
+                  onSubmit={handleLogin}
+                  error={serverError}
+                  isLoader={isLoader}
+                />
+              ) : (<Navigate to="/" replace />)
+            } />
+            <Route path="*" element={<NotFound goBack={goBack} />} />
+          </Routes>
+          <Footer />
+          <Popup isPopupOpen={isPopupOpen} message={errorMessage} />
+        </CurrentUserContext.Provider>
+      )}
+    </div>
   );
 }
 

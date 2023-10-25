@@ -2,7 +2,6 @@ import './Login.css';
 import AuthPage from '../AuthPage/AuthPage';
 import useFormValidation from '../../hooks/useFormValidation';
 import FormInput from '../FormInput/FormInput';
-import { EMAIL_PATTERN } from '../../utils/constants';
 
 const Login = ({ onSubmit, error, isLoader }) => {
   const { values, errors, isValid, handleChange } = useFormValidation();
@@ -26,8 +25,7 @@ const Login = ({ onSubmit, error, isLoader }) => {
         name='email'
         title='E-mail'
         type='email'
-        placeholder="Введите email"
-        pattern={EMAIL_PATTERN}
+        // pattern='^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$'
         required
       />
       <FormInput
@@ -37,9 +35,7 @@ const Login = ({ onSubmit, error, isLoader }) => {
         name='password'
         title='Пароль'
         type='password'
-        placeholder="Введите пароль"
         minLength={6}
-        maxLength={40}
         required
       />
     </AuthPage>

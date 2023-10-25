@@ -2,19 +2,19 @@ import './Profile.css';
 import { useState, useContext, useEffect  } from 'react';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import useFormValidation from '../../hooks/useFormValidation';
-import { EMAIL_PATTERN } from '../../utils/constants';
+// import { EMAIL_PATTERN, USER_NAME_PATTERN } from '../../utils/constants';
 
 const Profile = ({ logout, onSubmit, error, successMessage, isLoader }) => {
   const currentUser = useContext(CurrentUserContext);
   const { values, errors, isValid, handleChange, resetForm } = useFormValidation();
   const [inEditMode, setInEditMode] = useState(false);
-
-  function handleSubmit(e) {
+ 
+  const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(values);
   }
 
-  function handleEditClick() {
+  const handleEditClick = () => {
     setInEditMode(true);
   }
 
@@ -34,9 +34,7 @@ const Profile = ({ logout, onSubmit, error, successMessage, isLoader }) => {
         <form className="profile__form" name="profile-form" noValidate onSubmit={handleSubmit}>
           <fieldset className='profile__form-fields'>
             <div className="profile__field">
-              <label className="profile__input-label">
-                Имя
-              </label>
+              <label className="profile__input-label">Имя</label>
               <input
                 className={`profile__input ${errors.name && 'profile__input_error'}`}
                 name="name"
@@ -44,17 +42,16 @@ const Profile = ({ logout, onSubmit, error, successMessage, isLoader }) => {
                 placeholder="Имя"
                 value={values.name || ''}
                 onChange={handleChange}
-                minLength={3}
-                maxLength={40}
+                minLength={2}
+                maxLength={30}
                 disabled={!inEditMode}
+                // pattern={USER_NAME_PATTERN}
                 required
               ></input>
               <span className="profile__input-error-message">{errors.name || ''}</span>
             </div>
             <div className="profile__field">
-              <label className="profile__input-label">
-                E-mail
-              </label>
+            <label className="profile__input-label">E-mail</label>
               <input
                 className={`profile__input ${errors.email && 'profile__input_error'}`}
                 name="email"
@@ -62,7 +59,7 @@ const Profile = ({ logout, onSubmit, error, successMessage, isLoader }) => {
                 placeholder="Email"
                 value={values.email || ''}
                 onChange={handleChange}
-                pattern={EMAIL_PATTERN}
+                // pattern={EMAIL_PATTERN}
                 disabled={!inEditMode}
                 required
               ></input>

@@ -5,7 +5,7 @@ class MainApi {
   }
 
   async _handleRequest(url, options) {
-    const res = await fetch(this._baseUrl + url, options);
+    const res = await fetch(url);
     if (!res.ok) {
       const err = await res.json();
       return await Promise.reject(err);

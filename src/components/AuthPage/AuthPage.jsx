@@ -4,7 +4,6 @@ import Logo from '../Logo/Logo';
 import FormButton from '../FormButton/FormButton';
 
 const AuthPage = ({ children, type, onSubmit, isValid, error, isLoader }) => {
-  
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit();
