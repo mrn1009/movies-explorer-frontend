@@ -25,7 +25,6 @@ const Login = ({ onSubmit, error, isLoader }) => {
         name='email'
         title='E-mail'
         type='email'
-        // pattern='^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$'
         required
       />
       <FormInput

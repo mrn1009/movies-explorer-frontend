@@ -2,12 +2,12 @@ import AuthPage from '../AuthPage/AuthPage';
 import './Register.css';
 import useFormValidation from '../../hooks/useFormValidation';
 import FormInput from '../FormInput/FormInput';
-// import { USER_NAME_PATTERN } from '../../utils/constants';
+import { USER_NAME_PATTERN } from '../../utils/constants';
 
 const Register = ({ onSubmit, error, isLoader }) => {
   const { values, errors, isValid, handleChange } = useFormValidation();
 
-  function handleSubmit() {
+  const handleSubmit = () => {
     onSubmit(values);
   } 
     
@@ -26,11 +26,10 @@ const Register = ({ onSubmit, error, isLoader }) => {
         name='name'
         title='Имя'
         type='text'
-        placeholder="Введите имя"
         required
         minLength={2}
         maxLength={30}
-        // pattern={USER_NAME_PATTERN}
+        pattern={USER_NAME_PATTERN}
       />
       <FormInput
         value={values.email}
@@ -39,8 +38,6 @@ const Register = ({ onSubmit, error, isLoader }) => {
         name='email'
         title='E-mail'
         type='email'
-        placeholder="Введите email"
-        // pattern={EMAIL_PATTERN}
         required
       />
       <FormInput
@@ -50,7 +47,6 @@ const Register = ({ onSubmit, error, isLoader }) => {
         name='password'
         title='Пароль'
         type='password'
-        placeholder="Введите пароль"
         minLength={6}
         maxLength={40}
         required

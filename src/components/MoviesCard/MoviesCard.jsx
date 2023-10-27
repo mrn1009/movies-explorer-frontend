@@ -1,35 +1,34 @@
 import './MoviesCard.css';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { formatDuration } from '../../utils/FilterMovies';
 
-const MoviesCard = ({ card }) => {
-  const path = useLocation().pathname;
+const MoviesCard = ({ card, isSavedFilms, handleLikeClick, onCardDelete, saved, savedMovies }) => {
+  
+  const onCardClick = () => {
+    if (saved) {
+      onCardDelete(savedMovies.filter((m) => m.movieId === card.movieId)[0]);
+    } else {
+      handleLikeClick(card);
+    }
+  }
 
-  const [isCardSaved, setIsCardSaved] = useState(false);
-
-  const handleOnClick = () => {
-    setIsCardSaved(!isCardSaved);
-  };
+  const cardSaveClassName = `${!saved ? 'card__button card__button_type_save' : 'card__button card__button_type_saved'}`;
 
   return (
-      <article className="card">
-        <div className="card__description">
-          <h2 className="card__title">{card.title}</h2>
-          <p className="card__duration">{card.duration}</p>
-        </div>
-        <img className="card__poster" src={card.image} alt={card.title} />
-
-        {path === '/movies' ?
-          !isCardSaved ? (
-            <button type="button" className="card__button card__button_type_save" onClick={handleOnClick}>
-              Сохранить
-            </button>
-          ) : (
-            <button type="button" className="card__button card__button_type_saved" onClick={handleOnClick}/>
-        ) : (
-          <button type="button" className="card__button card__button_type_unsave" />
-        )}
-      </article>
+    <article className="card">
+      <div className="card__description">
+        <h2 className="card__title">{card.nameRU}</h2>
+        <p className="card__duration">{formatDuration(card.duration)}</p>
+      </div>
+      <a href={card.trailerLink} target="_blank" rel="noreferrer">
+        <img className="card__poster" src={card.image} 
+          alt={card.nameRU} />
+      </a>
+      {isSavedFilms ? (
+        <button type="button" className="card__button card__button_type_unsave" onClick={() => onCardDelete(card)}/>
+      ) : (
+        <button type="button" className={cardSaveClassName} onClick={onCardClick}>{!saved ? 'Сохранить' : ''}</button>
+      )}
+    </article>
   );
 }
 

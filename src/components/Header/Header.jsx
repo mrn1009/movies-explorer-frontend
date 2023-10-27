@@ -4,7 +4,6 @@ import Logo from '../Logo/Logo.jsx';
 import { useLocation } from 'react-router-dom';
 import NavAuth from '../NavAuth/NavAuth';
 
-
 const Header = ({ loggedIn }) => {
   const path = useLocation().pathname;
 

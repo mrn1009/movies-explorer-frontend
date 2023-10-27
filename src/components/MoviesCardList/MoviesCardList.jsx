@@ -1,34 +1,91 @@
 import './MoviesCardList.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
 import Preloader from '../Preloader/Preloader';
+import { ERROR_SEARCH_MESSAGE, NOT_FOUND_MESSAGE } from '../../utils/constants';
+import { cardsQuantity } from '../../utils/CardsQuantity';
 
-const MoviesCardList = ({ movies }) => {
+const MoviesCardList = (props) => {
+  const { cards, isSavedFilms, isLoading, isReqErr, isNotFound, handleLikeClick, savedMovies, onCardDelete } = props;
   const path = useLocation().pathname;
 
-  const [isLoading, setLoading] = useState(false);
+  const [shownMovies, setShownMovies] = useState(0);
 
-  const handlePreloader = () => {
-    setLoading(true);
-  };
+  const shownCount = () => {
+    setShownMovies(cardsQuantity().initial);
+  }
+
+  useEffect(() => {
+    shownCount();
+  }, []);
+
+  useEffect(() => {
+    shownCount();
+  }, [cards.length])
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.addEventListener('resize', shownCount);
+    }, 500);
+    return () => window.removeEventListener('resize', shownCount);
+  }, []);
+
+  const showMore = () => {
+    setShownMovies(shownMovies + cardsQuantity().add);
+  }
+
+  const getSavedMovieCard = (savedMovies, card) => {
+    return savedMovies.find((savedMovie) => savedMovie.movieId === card.movieId);
+  }
 
   return (
     <section className="cards" aria-label="Список карточек">
-      <div className="cards__grid">
-        {movies.map((card) => (
-          <MoviesCard key={card.id} card={card} />
-        ))}
-      </div>
+      {<Preloader isOpen={isLoading} />}
+      {isNotFound && !isLoading && (<p className="cards__search-error">{NOT_FOUND_MESSAGE}</p>)}
+      {isReqErr && !isLoading && (<p className="cards__search-error">{ERROR_SEARCH_MESSAGE}</p>)}
 
-      {isLoading ? (
-        <Preloader />
-      ) : (
-        path === '/movies' && (
-          <div className="cards__button-container">
-            <button className="cards__button" type="button" name="more" onClick={handlePreloader}>Ещё</button>
-          </div>
-        )
+      {!isLoading && !isReqErr && !isNotFound && (
+        <>
+          {path === '/movies' ? (
+            <>
+              <div className="cards__grid">
+                {cards.slice(0, shownMovies).map((card) => (
+                  <MoviesCard
+                    key={isSavedFilms ? card._id : card.movieId}
+                    saved={getSavedMovieCard(savedMovies, card)}
+                    cards={cards}
+                    card={card}
+                    isSavedFilms={isSavedFilms}
+                    handleLikeClick={handleLikeClick}
+                    onCardDelete={onCardDelete}
+                    savedMovies={savedMovies}
+                  />
+                ))}
+              </div>
+              {cards.length > shownMovies && (
+                <div className="cards__button-container">
+                  <button className="cards__button" type="button" name="more" onClick={showMore}>Ещё</button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="cards__grid">
+              {cards.map((card) => (
+                <MoviesCard
+                  key={isSavedFilms ? card._id : card.movieId}
+                  saved={getSavedMovieCard(savedMovies, card)}
+                  cards={cards}
+                  card={card}
+                  isSavedFilms={isSavedFilms}
+                  handleLikeClick={handleLikeClick}
+                  onCardDelete={onCardDelete}
+                  savedMovies={savedMovies}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </section>
   );

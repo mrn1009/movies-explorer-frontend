@@ -27,10 +27,18 @@ function App() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoader, setIsLoader] = useState(false);
   const [load, setLoad] = useState(false);
+  const [savedMovies, setSavedMovies] = useState([]);
 
   useEffect(() => {
     authUser();
   }, [loggedIn]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      getSavedMovies();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn])
 
   const handleRequestError = (err) => {
     setIsPopupOpen(true);
@@ -123,6 +131,42 @@ function App() {
     }
   }
 
+  const getSavedMovies = async () => {
+    setIsLoader(true);
+    try {
+      const savedMovies = await mainApi.getMovies();
+      setSavedMovies(savedMovies);
+    } catch (err) {
+      handleRequestError(err);
+    } finally {
+      setIsLoader(false);
+    }
+  }
+
+  const handleCardLike = async (movie) => {
+    setIsLoader(true);
+    try {
+      const savedMovie = await mainApi.saveMovie(movie);
+      setSavedMovies([savedMovie, ...savedMovies])
+    } catch (err) {
+      handleRequestError(err);
+    } finally {
+      setIsLoader(false);
+    }
+  }
+
+  const handleCardDelete = async (movie) => {
+    setIsLoader(true);
+    try {
+      await mainApi.deleteMovie(movie._id);
+      setSavedMovies((state) => state.filter((item) => item._id !== movie._id));
+    } catch (err) {
+      handleRequestError(err);
+    } finally {
+      setIsLoader(false);
+    }
+  }
+
   return (
     <div className="page">
       {!load ? (
@@ -137,6 +181,9 @@ function App() {
                 Component={Movies}
                 loggedIn={loggedIn}
                 isLoader={isLoader}
+                savedMovies={savedMovies}
+                onCardDelete={handleCardDelete}
+                handleLikeClick={handleCardLike}
               />
             } />
             <Route path="/saved-movies" element={
@@ -144,6 +191,8 @@ function App() {
                 Component={SavedMovies}
                 loggedIn={loggedIn}
                 isLoader={isLoader}
+                savedMovies={savedMovies}
+                onCardDelete={handleCardDelete}
               />
             } />
             <Route path="/profile" element={
