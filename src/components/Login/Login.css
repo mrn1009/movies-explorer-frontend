@@ -1,0 +1,32 @@
+.formInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.formInput-title {
+  font: 400 10px/12px sans-serif;
+  color: #8B8B8B;
+  margin-bottom: 5px;
+}
+
+.formInput-input {
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 1px 1px 10px;
+  border-bottom: 1px solid #424242;
+  background-color: transparent;
+}
+
+.formInput-input_error {
+  color: #EE3465;
+  border-bottom: 1px solid #EE3465;
+}
+
+.formInput-error_message {
+  font: 400 10px/12px sans-serif;
+  color: #EE3465;
+  margin-top: 7px;
+}

@@ -1,0 +1,14 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 74px;
+}
+
+.header-hide {
+  display: none;
+}
+
+.header-landing {
+  background-color: #073041;
+}

@@ -1,0 +1,30 @@
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.preloader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.preloader__spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #EE3465;   /* #3DDC84 */
+  border-top: 6px solid transparent;
+  border-radius: 50%;
+  animation: spin-animation 0.5s linear infinite;
+}
