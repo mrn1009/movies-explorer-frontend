@@ -69,16 +69,21 @@ function App() {
   };
 
   const handleRegister = ({ name, email, password }) => {
+    setIsLoading(true);
     mainApi
       .register(name, email, password)
       .then(() => handleLogin({ email, password }))
       .then(() => navigate('/movies', { replace: true }))
       .catch((err) => {
         handleReqError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleLogin = ({ email, password }) => {
+    setIsLoading(true);
     mainApi
       .login(email, password)
       .then(() => mainApi.getProfile())
@@ -89,10 +94,14 @@ function App() {
       })
       .catch((err) => {
         handleReqError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleUpdateUser = ({ name, email }) => {
+    setIsLoading(true);
     mainApi
       .updateUser(name, email)
       .then((user) => {
@@ -106,6 +115,9 @@ function App() {
         } else {
           handleReqError(error);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -125,6 +137,7 @@ function App() {
   };
 
   const handleMovieLike = (movie) => {
+    setIsLoading(true);
     mainApi
       .saveMovie(movie)
       .then((savedMovie) => {
@@ -132,10 +145,14 @@ function App() {
       })
       .catch((err) => {
         handleReqError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleMovieDelete = (movie) => {
+    setIsLoading(true);
     mainApi
       .deleteMovie(movie._id)
       .then(() => {
@@ -145,10 +162,14 @@ function App() {
       })
       .catch((err) => {
         handleReqError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleLogout = () => {
+    setIsLoading(true);
     mainApi
       .logout()
       .then(() => {
@@ -160,6 +181,9 @@ function App() {
       })
       .catch((err) => {
         handleReqError(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 

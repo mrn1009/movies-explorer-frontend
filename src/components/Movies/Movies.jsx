@@ -10,7 +10,7 @@ const Movies = ({ onCardLike, onCardDelete, favoriteMovies }) => {
   const [filteredFilms, setFilteredFilms] = useState([]);
   const [isNotFound, setIsNotFound] = useState(false);
   const [isRequestError, setIsRequestError] = useState(false);
-  const [initialMovies, setInitialMovies] = useState([]);
+  const [allMovies, setAllMovies] = useState([]);
 
   const filterMovies = (movies, query) => {
     const moviesByQuery = movies.filter((movie) => {
@@ -28,53 +28,54 @@ const Movies = ({ onCardLike, onCardDelete, favoriteMovies }) => {
 
   const handleShortMovies = () => {
     setIsShortFilms(!isShortFilms);
-    const filtered = filterDuration(initialMovies);
-    setFilteredFilms(!isShortFilms ? filtered : initialMovies);
+    const filtered = filterDuration(allMovies);
+    setFilteredFilms(!isShortFilms ? filtered : filterMovies(filtered, searchQuery));
     localStorage.setItem('shortMovies', !isShortFilms);
   };
-  
+
+  const [searchQuery, setSearchQuery] = useState('');
+
   const onSearchMovies = (query) => {
     setIsLoading(true);
+    setSearchQuery(query);
     localStorage.setItem('movieSearch', query);
     localStorage.setItem('shortMovies', isShortFilms);
-    moviesApi
-      .getMovies()
-      .then((cardsData) => {
-        const filteredFilms = filterMovies(cardsData, query);
-        const finalMovies = isShortFilms ? filterDuration(filteredFilms) : filteredFilms;
-        setInitialMovies(filteredFilms);
-        setFilteredFilms(finalMovies);
-        setIsNotFound(finalMovies.length === 0 && query);
-        setIsRequestError(false);
-      })
-      .catch((err) => {
-        setIsRequestError(true);
-        console.error(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const filteredFilms = filterMovies(allMovies, query);
+    const finalMovies = isShortFilms ? filterDuration(filteredFilms) : filteredFilms;
+    setFilteredFilms(finalMovies);
+    setIsNotFound(finalMovies.length === 0 && query);
+    setIsRequestError(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    const storedMovies = JSON.parse(localStorage.getItem('movies')) || [];
-    const isShortMoviesStored = localStorage.getItem('shortMovies') === 'true';
-    const filtered = isShortMoviesStored ? filterDuration(storedMovies) : storedMovies;
-    setInitialMovies(storedMovies);
-    setFilteredFilms(filtered);
-    setIsShortFilms(isShortMoviesStored);
-  }, []); 
+    if (allMovies.length === 0) {
+      setIsLoading(true);
+      moviesApi
+        .getMovies()
+        .then((cardsData) => {
+          setAllMovies(cardsData);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsRequestError(true);
+          setIsLoading(false);
+          console.error(err);
+        });
+    }
+  }, [allMovies]);
 
   useEffect(() => {
-    if (initialMovies.length > 0) {
-      localStorage.setItem('movies', JSON.stringify(initialMovies));
-    }
-  }, [initialMovies]);
+    const isShortMoviesStored = localStorage.getItem('shortMovies') === 'true';
+    const filtered = isShortMoviesStored ? filterDuration(allMovies) : allMovies;
+    setFilteredFilms(filtered);
+    setIsShortFilms(isShortMoviesStored);
+  }, [allMovies]);
 
   return (
     <main className="movies">
       <div className="container">
-        <SearchForm onFilter={handleShortMovies} onSearchMovies={onSearchMovies} isShortMovies={isShortFilms}/>
+        <SearchForm onFilter={handleShortMovies} onSearchMovies={onSearchMovies} isShortMovies={isShortFilms} />
         <MoviesCardList
           isSavedFilms={false}
           cards={filteredFilms}
@@ -83,12 +84,11 @@ const Movies = ({ onCardLike, onCardDelete, favoriteMovies }) => {
           onCardDelete={onCardDelete}
           isLoading={isLoading}
           isNotFound={isNotFound}
-          isRequestError={isRequestError}  
+          isRequestError={isRequestError}
         />
       </div>
     </main>
   );
-  
 };
 
 export default Movies;

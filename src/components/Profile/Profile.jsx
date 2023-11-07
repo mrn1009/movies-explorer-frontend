@@ -3,16 +3,7 @@ import useFormValidation from '../../hooks/useFormValidation';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import InputField from './InputField/InputField';
 import './Profile.css';
-import { EMAIL_PATTERN, NAME_PATTERN} from '../../utils/constants';
-
-const useProfileEffect = (currentUser, resetForm, setInEditMode) => {
-  useEffect(() => {
-    if (currentUser) {
-      resetForm(currentUser, {}, true);
-      setTimeout(() => setInEditMode(false), 2000);
-    }
-  }, [currentUser, resetForm, setInEditMode]);
-};
+import { EMAIL_PATTERN , NAME_PATTERN} from '../../utils/constants';
 
 const Profile = ({ singout, onSubmit, error, successMessage, isLoading }) => {
   const currentUser = useContext(CurrentUserContext);
@@ -27,7 +18,12 @@ const Profile = ({ singout, onSubmit, error, successMessage, isLoading }) => {
 
   const isSaveButtonDisabled = !isValid || isLoading || (currentUser.name === values.name && currentUser.email === values.email);
 
-  useProfileEffect(currentUser, resetForm, setInEditMode);
+  useEffect(() => {
+    if (currentUser) {
+      resetForm(currentUser, {}, true);
+      setTimeout(() => setInEditMode(false), 2000);
+    }
+  }, [currentUser, resetForm]);
 
   return (
     <main className='profile'>
@@ -46,7 +42,7 @@ const Profile = ({ singout, onSubmit, error, successMessage, isLoading }) => {
               value={values.name || ''}
               onChange={handleChange}
               error={errors.name}
-              disabled={!inEditMode}
+              disabled={!inEditMode || isLoading}
               pattern={NAME_PATTERN}
             />
             <InputField
