@@ -1,7 +1,7 @@
 import React from 'react';
 import './MoviesCard.css';
 
-const MoviesCard = ({ saved, favoriteMovies, isSavedFilms, card, onCardLike, onCardDelete }) => {
+const MoviesCard = ({ saved, savedMovies, isSavedFilms, card, onCardLike, onCardDelete }) => {
   const cardMovieDuration = (duration) => {
     const min = duration % 60;
     const hours = (duration - min) / 60;
@@ -10,7 +10,7 @@ const MoviesCard = ({ saved, favoriteMovies, isSavedFilms, card, onCardLike, onC
 
   const clickCard = () => {
     if (saved) {
-      onCardDelete(favoriteMovies.find((m) => m.movieId === card.movieId));
+      onCardDelete(savedMovies.find((m) => m.movieId === card.movieId));
     } else {
       onCardLike(card);
     }

@@ -6,7 +6,7 @@
 
 Публичный IP 51.250.76.140
 
-Fontend: https://movies.mrn1009.nomoredomainsrocks.ru/
+Frontend: https://movies.mrn1009.nomoredomainsrocks.ru/
 
 Backend: https://api.movies.mrn1009.nomoredomainsrocks.ru/
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../../Preloader/Preloader';
 import './MoviesCardList.css';
+import { NOT_FOUND_ERROR_MESSAGE , CONNECTION_ERROR_MESSAGE } from '../../../utils/constants';
 
 const calculateCardsToShow = () => {
   const screenWidth = document.documentElement.clientWidth;
@@ -52,7 +53,7 @@ const MoviesCardList = (props) => {
       <Preloader isOpen={isLoading} />
       {!isLoading && (isNotFound || isError) && (
         <p className="movies__search-error">
-          {isNotFound ? 'Ничего не найдено' : 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'}
+          {isNotFound ? NOT_FOUND_ERROR_MESSAGE : CONNECTION_ERROR_MESSAGE}
         </p>
       )}
       {!isLoading && !isError && !isNotFound && (

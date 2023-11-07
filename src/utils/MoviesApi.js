@@ -1,3 +1,5 @@
+import { API_MOVIES_URL } from './constants';
+
 const handleResponse = async (res) => {
   if (res.ok) {
     const movies = await res.json();
@@ -24,7 +26,7 @@ const getKeysFilm = (movie) => {
 };
 
 export const getMovies = async () => {
-  const response = await fetch('https://api.nomoreparties.co/beatfilm-movies', {
+  const response = await fetch(API_MOVIES_URL, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

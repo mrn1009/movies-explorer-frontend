@@ -1,3 +1,5 @@
+import { API_BASE_URL } from './constants';
+
 class MainApi {
   constructor({ url, headers }) {
     this._baseUrl = url;
@@ -61,7 +63,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  url: 'https://api.movies.mrn1009.nomoredomainsrocks.ru',
+  url: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   }

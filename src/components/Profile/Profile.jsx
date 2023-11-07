@@ -3,6 +3,7 @@ import useFormValidation from '../../hooks/useFormValidation';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import InputField from './InputField/InputField';
 import './Profile.css';
+import { EMAIL_PATTERN, NAME_PATTERN} from '../../utils/constants';
 
 const useProfileEffect = (currentUser, resetForm, setInEditMode) => {
   useEffect(() => {
@@ -46,6 +47,7 @@ const Profile = ({ singout, onSubmit, error, successMessage, isLoading }) => {
               onChange={handleChange}
               error={errors.name}
               disabled={!inEditMode}
+              pattern={NAME_PATTERN}
             />
             <InputField
               label="E-mail"
@@ -57,6 +59,7 @@ const Profile = ({ singout, onSubmit, error, successMessage, isLoading }) => {
               onChange={handleChange}
               error={errors.email}
               disabled={!inEditMode}
+              pattern={EMAIL_PATTERN}
             />
           </fieldset>
           <div className="profile-buttons">

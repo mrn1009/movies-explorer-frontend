@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/MainApi';
 import Preloader from '../Preloader/Preloader';
@@ -13,6 +13,7 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../Movies/SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import { PROFILE_SUCCESS_MESSAGE , PROFILE_ERROR_EMAIL_MESSAGE } from '../../utils/constants';
 
 function App() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function App() {
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     const checkLoggedInStatus = () => {
@@ -32,6 +34,9 @@ function App() {
           if (user) {
             setLoggedIn(true);
             setUser(user);
+            if (location.pathname === '/signin' || location.pathname === '/signup') {
+              navigate('/movies');
+            }
           } else {
             setLoggedIn(false);
           }
@@ -48,7 +53,7 @@ function App() {
     };
 
     checkLoggedInStatus();
-  }, []);
+  }, [location.pathname, navigate]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -92,12 +97,12 @@ function App() {
       .updateUser(name, email)
       .then((user) => {
         setUser(user);
-        setSuccessMessage('Профиль успешно изменен');
+        setSuccessMessage(PROFILE_SUCCESS_MESSAGE);
         setTimeout(() => setSuccessMessage(''), 2000);
       })
       .catch((error) => {
         if (error.response && error.response.status === 409) {
-          setError('Пользователь с таким email уже существует.');
+          setError(PROFILE_ERROR_EMAIL_MESSAGE);
         } else {
           handleReqError(error);
         }
@@ -174,6 +179,7 @@ function App() {
           <Route path="/" element={<Main/>} />
           <Route path="/signup" element={<Register isLoading={isLoading} onSubmit={handleRegister}error={error}/>} />
           <Route path="/signin" element={<Login isLoading={isLoading} onSubmit={handleLogin} error={error}/>} />
+
           <Route path="/movies"
             element={
               <ProtectedRoute

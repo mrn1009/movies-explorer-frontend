@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import Auth from '../Auth/Auth';
 import useFormValidation from '../../hooks/useFormValidation';
+import { EMAIL_PATTERN, NAME_PATTERN} from '../../utils/constants';
 
 const Register = ({ isLoading, onSubmit, error }) => {
   const { values, isValid, handleChange, errors } = useFormValidation();
@@ -23,7 +24,7 @@ const Register = ({ isLoading, onSubmit, error }) => {
           minLength={2}
           maxLength={30}
           required
-          pattern='^[A-Za-zА-Яа-яЁё\\-\\s]+$'
+          pattern={NAME_PATTERN}
         />
         {errors.name && (
           <span className="formInput-error_message">{errors.name}</span>
@@ -40,7 +41,7 @@ const Register = ({ isLoading, onSubmit, error }) => {
           value={values.email}
           type="email"
           required
-          pattern='^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}$'
+          pattern={EMAIL_PATTERN}
         />
         {errors.email && (
           <span className="formInput-error_message">{errors.email}</span>

@@ -3,10 +3,7 @@ import './AboutMe.css';
 import author from '../../../images/1_3.jpg';
 import Portfolio from '../Portfolio/Portfolio';
 import { Link } from "react-router-dom";
-
-const ABOUT_ME_TEXT = "Я родилась и выросла на юге. Люблю сложную музыку, больших собак и итальянский язык. Однажды друг посоветовал мне попробывать себя в программировании, я начала понемногу заниматься сама, а потом получила грант на учебу в ЯндексПрактикуме. Спустя 10 месяцев учебы могу сказать, что проект, который Вы видите, вероятно, последний, потому что большего выгорания чем сейчас я еще не чувствовала.";
-const ABOUT_ME_LINK = "https://github.com/mrn1009"
-const ABOUT_ME_STATUS = "Фронтенд-разработчик, 33 года"
+import { ABOUT_ME_STATUS, ABOUT_ME_TEXT, ABOUT_ME_LINK } from '../../../utils/constants'
 
 function AboutMe() {
   return (

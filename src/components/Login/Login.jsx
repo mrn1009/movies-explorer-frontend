@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import Auth from '../Auth/Auth';
 import useFormValidation from '../../hooks/useFormValidation';
 import './Login.css';
+import { EMAIL_PATTERN } from '../../utils/constants';
 
 const Login = ({ onSubmit, isLoading, error }) => {
   const { errors, isValid, handleChange,  values} = useFormValidation();
@@ -9,7 +10,7 @@ const Login = ({ onSubmit, isLoading, error }) => {
   const handleSubmit = useCallback(() => {
     onSubmit(values);
   }, [onSubmit, values]);
-
+  
   return (
     <Auth type={'login'} isValid={isValid} isLoading={isLoading} onSubmit={handleSubmit} error={error}>
       <div className="formInput">
@@ -19,7 +20,7 @@ const Login = ({ onSubmit, isLoading, error }) => {
           id="email"
           name="email"
           type="email"
-          pattern='^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$'
+          pattern={EMAIL_PATTERN}
           required
           value={values.email || ''}
           onChange={handleChange}
