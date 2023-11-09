@@ -1,194 +1,104 @@
 .profile {
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   flex-grow: 1;
-  width: 100%;
 }
 
-.profile__inner {
-  max-width: 410px;
-  min-height: 482px;
+.profile-container {
   display: flex;
-  flex-direction: column;
   width: 100%;
+  max-width: 409px;
+  min-height: 480px;
+  flex-direction: column;
+  margin-bottom: 2px;
 }
 
-.profile__title {
-  margin: 0 0 123px;
-  padding: 0;
+.profile-title {
   text-align: center;
-  font-size: 24px;
-  line-height: normal;
-  font-weight: 500;
+  margin: 1px 1px 122px;
+  font: 500 24px/1.2 sans-serif;
 }
 
-.profile__form {
+.profile-form {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   justify-content: space-between;
 }
 
-.profile__form-fields {
-  border: none;
+.profile-fields {
   padding: 0;
   margin: 0;
-}
-
-.profile__input-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 0 0 17px;
-  padding: 0 0 16px;
-  font-weight: 500;
-  font-size: 11px;
-  line-height: 13px;
-  min-height: 14px;
-  cursor: text;
-  border-bottom: 1px solid #424242;
-}
-
-.profile__input-label:last-of-type {
   border: none;
-  padding: 0;
-  margin: 0;
 }
 
-.profile__input {
-  margin: 0;
-  padding: 0;
-  width: 122px;
-  text-align: right;
-  font-size: 11px;
-  line-height: normal;
-  font-weight: 400;
-  border: none;
-  outline: none;
-  background-color: #202020;
-  color: #fff;
-}
-
-.profile__input::placeholder {
-  font-size: 11px;
-  line-height: normal;
-  font-weight: 400;
-}
-
-.profile__input:focus {
-  outline: 1px solid #424242;
-}
-
-.profile__buttons {
+.profile-buttons {
   display: flex;
   flex-direction: column;
 }
 
-.profile__edit-button {
+.profile-edit,
+.profile-exit {
   margin: 0;
   padding: 0;
   border: none;
   background-color: transparent;
-  font-size: 13px;
-  line-height: normal;
-  font-weight: 400;
+  font: 400 13px/1 sans-serif;
   color: #fff;
   cursor: pointer;
 }
 
-.profile__edit-button:hover {
-  opacity: .7;
-}
-
-.profile__exit-button {
-  margin: 16px 0 0;
-  padding: 0;
-  border: none;
-  background-color: transparent;
+.profile-exit {
+  margin-top: 17px;
   font-weight: 500;
-  font-size: 13px;
-  line-height: normal;
   color: #EE3465;
-  cursor: pointer;
 }
 
-.profile__exit-button:hover {
-  opacity: .7;
-}
-
-.profile__save-button {
+.profile-save {
   background-color: #4285F4;
-  border-radius: 3px;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: normal;
-  color: #fff;
+  border-radius: 5px;
   height: 45px;
   cursor: pointer;
+  font: 500 14px/1.2 sans-serif;
+  color: #fff;
+  text-align: center;
 }
 
-.profile__save-button:hover {
-  opacity: .8;
-}
-
-.profile__save-button:disabled {
+.profile-save:disabled {
   color: #C2C2C2;
   background: #F8F8F8;
   cursor: not-allowed;
 }
 
-.profile__message {
-  font-size: 11px;
-  line-height: normal;
-  font-weight: 400;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  color: #EE3465;
-  margin: 0 0 20px;
+.profile-exit:hover,
+.profile-edit:hover,
+.profile-save:hover {
+  opacity: 0.7;
 }
 
-@media screen and (max-width: 1023px) {
-  .profile__inner {
-    min-height: 445px;
-    margin-bottom: 35px;
+.profile-message, .profile-error {
+  font: 400 13px/1 sans-serif;
+  text-align: center;
+  color: #3DDC84;
+}
+
+.profile-error{
+  color: #EE3465;
+}
+
+@media screen and (max-width: 900px) {
+  .profile-save {
+    margin-top: 210px;
   }
 
-  .profile__title {
+  .profile-title {
     margin-bottom: 96px;
   }
 
-  .profile__button-save {
-    margin-top: 210px;
+  .profile-container {
+    min-height: 445px;
+    margin-bottom: 35px;
   }
-}
-
-@media screen and (max-width: 576px) {
-  .profile {
-    align-items: stretch;
-  }
-
-  .profile__inner {
-    margin: 70px 30px 40px;
-  }
-
-  .profile__title {
-    margin-bottom: 80px;
-  }
-
-  .profile__input {
-    width: 120px;
-  }
-
-  .profile__edit-button {
-    font-size: 12px;
-    line-height: normal;
-  }
-
-  .profile__exit-button {
-    font-size: 12px;
-    line-height: normal;
-  }
-
 }

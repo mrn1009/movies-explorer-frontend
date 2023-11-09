@@ -1,19 +1,34 @@
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import './Footer.css';
-import { useLocation } from "react-router-dom";
 
-const Footer = () => {
-  const path = useLocation().pathname;
-  const classLocal = path === '/' || path === '/movies' || path === '/saved-movies' ? '' : 'footer_hidden';
-  
+function Footer() {
+  const location = useLocation();
+  const { pathname } = location;
+
+  const allowedPaths = ["/", "/movies", "/saved-movies"];
+
+  const shouldShowFooter = allowedPaths.includes(pathname);
+
+  if (!shouldShowFooter) {
+    return null;
+  }
+
   return (
-    <footer className={"footer " + classLocal}>
+    <footer className="footer">
       <div className="container">
-        <p className="footer__text">Учебный проект Яндекс.Практикум х BeatFilm.</p>
+        <h3 className="footer__title">Учебный проект Яндекс.Практикум х BeatFilm.</h3>
         <div className="footer__container">
-          <p className="footer__copy">&copy; 2023</p>
-          <ul className="footer__links-list">
-            <li><a className="footer__link" href="https://practicum.yandex.ru/" target="_blank" rel="noreferrer">Яндекс.Практикум</a></li>
-            <li><a className="footer__link" href="https://github.com/" target="_blank" rel="noreferrer">Github</a></li>
+          <p className="footer__year">&copy;2023</p>
+          <ul className="footer__links">
+            <li>
+              <Link className="footer__link" href="https://practicum.yandex.ru/"
+             rel="noreferrer" target="_blank">Яндекс.Практикум</Link>
+            </li>
+            <li>
+              <Link className="footer__link" href="https://github.com/" 
+            rel="noreferrer" target="_blank">Github</Link>
+            </li>
           </ul>
         </div>
       </div>

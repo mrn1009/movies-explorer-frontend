@@ -1,26 +1,24 @@
-import React from 'react';
+import { useState, useMemo, useCallback } from 'react';
 
 const useFormValidation = () => {
-  const [values, setValues] = React.useState({});
-  const [errors, setErrors] = React.useState({});
-  const [isValid, setIsValid] = React.useState(false);
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
 
-  const handleChange = (e) => {
-    const input = e.target;
-    const { name, value } = input;
-
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
     setValues({ ...values, [name]: value });
-    setErrors({ ...errors, [name]: input.validationMessage });
-    setIsValid(input.closest('form').checkValidity());
-  }
+    setErrors({ ...errors, [name]: e.target.validationMessage });
+    setIsValid(e.target.closest('form').checkValidity());
+  }, [values, errors]);
 
-  const resetForm = React.useCallback((newValues = {}, newErrors = {}, newIsValid = false) => {
+  const resetForm = useCallback((newValues = {}, newErrors = {}, newIsValid = false) => {
     setValues(newValues);
     setErrors(newErrors);
     setIsValid(newIsValid);
-  }, [setValues, setErrors, setIsValid]);
+  }, []);
 
-  return { values, errors, isValid, handleChange, resetForm };
-}
+  return useMemo(() => ({ values, errors, isValid, handleChange, resetForm, setIsValid }), [values, errors, isValid, handleChange, resetForm]);
+};
 
 export default useFormValidation;

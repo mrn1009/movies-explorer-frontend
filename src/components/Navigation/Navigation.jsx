@@ -1,57 +1,46 @@
-import { useState } from 'react';
-import './Navigation.css';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import './Navigation.css';
 
-const Navigation = ({ path }) => {
-  const [isBurgerOpened, setIsBurgerOpened] = useState(false);
-
-  function onClickBurger() {
-    setIsBurgerOpened(!isBurgerOpened);
-  }
-
-  function onClose() {
-    setIsBurgerOpened(false);
-  }
-
-  function handleCloseByOverlay(e) {
-    if (e.target.classList.contains('navigation_state_opened')) {
-      onClose();
+function useBurgerMenu() {
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const toggleBurger = () => {
+    setIsBurgerOpen(!isBurgerOpen);
+  };
+  const closeBurger = () => {
+    setIsBurgerOpen(false);
+  };
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains('nav_overlay_opened')) {
+      closeBurger();
     }
-  }
+  };
+  return { isBurgerOpen, toggleBurger, closeBurger, handleOverlayClick };
+}
 
-  const generateClassName = (current) => {
-    return `navigation__link ${path === current ? 'navigation__link_active' : ''}`;
-  }
+function Navigation({ path }) {
+  const { isBurgerOpen, toggleBurger, closeBurger, handleOverlayClick } = useBurgerMenu();
+  const navClassName = `nav__link ${!isBurgerOpen ? 'nav__link_active' : ''}`;
+  const isLandingPage = path === '/';
+  const iconClassName = `nav__link-icon ${isLandingPage ? 'nav__link_landing' : ''}`;
 
   return (
-    <div className="navigation">
-      <button
-        className={`navigation__burger ${isBurgerOpened ? 'navigation__burger_closed' : ''}`}
-        type='button'
-        onClick={onClickBurger}
-      />
-
-      <nav className={`navigation__container navigation_state_${isBurgerOpened ? 'opened' : 'closed'}`} onClick={handleCloseByOverlay}>
-        <ul className="navigation__list">
-          <li className='navigation__item navigation__item_type_mobile'>
-            <NavLink to='/' className={generateClassName('/')}  onClick={onClose}>
-              Главная
-            </NavLink>
+    <div className="nav">
+      <button className={`nav__burger ${isBurgerOpen ? 'nav__burger_closed' : ''}`} type='button' onClick={toggleBurger}/>
+      <nav className={`nav__container nav_overlay_${isBurgerOpen ? 'opened' : 'closed'}`} onClick={handleOverlayClick}>
+        <ul className="nav__menu">
+          <li className="nav__menu-item mobile-item">
+            <NavLink to='/' onClick={closeBurger} className={navClassName}>Главная</NavLink>
           </li>
-          <li className="navigation__item">
-            <NavLink to="/movies" className={generateClassName('/movies')} onClick={onClose}>
-              Фильмы
-            </NavLink>
+          <li className="nav__menu-item">
+            <NavLink to="/movies" onClick={closeBurger} className={navClassName}>Фильмы</NavLink>
           </li>
-          <li className="navigation__item">
-            <NavLink to="/saved-movies" className={generateClassName('/saved-movies')} onClick={onClose}>
-              Сохранённые фильмы
-            </NavLink>
+          <li className="nav__menu-item">
+            <NavLink to="/saved-movies" onClick={closeBurger} className={navClassName}>Сохранённые фильмы</NavLink>
           </li>
-          <li className="navigation__item">
-            <NavLink to="/profile" className={generateClassName('/profile') + ' navigation__link_type_account'} onClick={onClose}>
-              Аккаунт
-              <div className={`navigation__link-icon ${path === '/' ? 'navigation__link-icon_landing' : ''}`} />
+          <li className="nav__menu-item">
+            <NavLink to="/profile" onClick={closeBurger} className={`${navClassName} nav__link-account`}>Аккаунт
+            <span className={iconClassName} />
             </NavLink>
           </li>
         </ul>
@@ -61,3 +50,4 @@ const Navigation = ({ path }) => {
 }
 
 export default Navigation;
+

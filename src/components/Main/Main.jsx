@@ -1,9 +1,10 @@
-import AboutMe from "../AboutMe/AboutMe";
-import AboutProject from "../AboutProject/AboutProject";
-import Promo from "../Promo/Promo";
-import Techs from "../Techs/Techs";
+import React from 'react' ;
+import Promo from "../Landing/Promo/Promo";
+import AboutProject from "../Landing/AboutProject/AboutProject";
+import Techs from "../Landing/Techs/Techs";
+import AboutMe from "../Landing/AboutMe/AboutMe" ;
 
-const Main = () => {
+function Main() {
   return (
     <main className="main">
       <Promo />
