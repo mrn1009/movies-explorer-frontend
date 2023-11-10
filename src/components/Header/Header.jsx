@@ -1,26 +1,27 @@
-import React from 'react';
 import './Header.css';
 import Navigation from '../Navigation/Navigation.jsx';
-import Logo from '../Landing/Logo/Logo.jsx';
+import Logo from '../Logo/Logo.jsx';
 import { useLocation } from 'react-router-dom';
-import NavTab from '../Landing/NavTab/NavTab.jsx';
+import NavAuth from '../NavAuth/NavAuth';
+
 
 const Header = ({ loggedIn }) => {
   const path = useLocation().pathname;
-  const isLandingPage = path === '/';
-  const isMoviesPage = path === '/movies' || path === '/saved-movies' || path === '/profile';
-  const headerClass = `header ${isLandingPage ? 'header-landing' : isMoviesPage ? '' : 'header-hide'}`;
+
+  const classLocal = path === '/' ? 'header_type_landing' 
+  : path === "/movies" || path === "/saved-movies" || path === '/profile'
+  ? '' : 'header_hidden';
 
   return (
-    <header className={headerClass}>
+    <header className={"header " + classLocal}>
       <div className="container">
-        <div className="header-container">
+        <div className="header__container">
           <Logo />
-          {!loggedIn ? <NavTab /> : <Navigation path={path} />}
+          {!loggedIn ? <NavAuth /> : <Navigation path={path} />}
         </div>
       </div>
     </header>
   );
-};
+}
 
 export default Header;

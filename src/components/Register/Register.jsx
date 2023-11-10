@@ -1,71 +1,59 @@
-import React, { useCallback } from "react";
-import Auth from '../Auth/Auth';
+import AuthPage from '../AuthPage/AuthPage';
+import './Register.css';
 import useFormValidation from '../../hooks/useFormValidation';
-import { EMAIL_PATTERN, NAME_PATTERN} from '../../utils/constants';
+import FormInput from '../FormInput/FormInput';
+import { EMAIL_PATTERN } from '../../utils/constants';
 
-const Register = ({ isLoading, onSubmit, error }) => {
-  const { values, isValid, handleChange, errors } = useFormValidation();
+const Register = () => {
+  const { values, errors, isValid, handleChange } = useFormValidation();
 
-  const handleSubmit = useCallback(() => {
-    onSubmit(values);
-  }, [onSubmit, values]);
+  function handleSubmit() {
+    // onSubmit(values);
+  } 
     
   return (
-    <Auth onSubmit={handleSubmit} type={'register'} isLoading={isLoading} error={error} isValid={isValid}>
-      <div className="formInput">
-        <p className="formInput-title" htmlFor="name">Имя</p>
-        <input
-          className={`formInput-input ${errors.name ? 'formInput-input_error' : ''}`}
-          id="name"
-          name="name"
-          value={values.name}
-          onChange={handleChange}
-          type="text"
-          minLength={2}
-          maxLength={30}
-          required
-          pattern={NAME_PATTERN}
-        />
-        {errors.name && (
-          <span className="formInput-error_message">{errors.name}</span>
-        )}
-      </div>
-
-      <div className="formInput">
-        <p className="formInput-title" htmlFor="email">E-mail</p>
-        <input
-          className={`formInput-input ${errors.email ? 'formInput-input_error' : ''}`}
-          id="email"
-          name="email"
-          onChange={handleChange}
-          value={values.email}
-          type="email"
-          required
-          pattern={EMAIL_PATTERN}
-        />
-        {errors.email && (
-          <span className="formInput-error_message">{errors.email}</span>
-        )}
-      </div>
-
-      <div className="formInput">
-        <p className="formInput-title" htmlFor="password">Пароль</p>
-        <input
-          className={`formInput-input ${errors.password ? 'formInput-input_error' : ''}`}
-          id="password"
-          name="password"
-          onChange={handleChange}
-          value={values.password}
-          type="password"
-          minLength={6}
-          maxLength={40}
-          required
-        />
-        {errors.password && (
-          <span className="formInput-error_message">{errors.password}</span>
-        )}
-      </div>
-    </Auth>
+    <AuthPage 
+      type={'register'}
+      isValid={isValid}
+      onSubmit={handleSubmit}
+      // error={error}
+    >
+      <FormInput
+        value={values.name}
+        error={errors.name}
+        onChange={handleChange}
+        name='name'
+        title='Имя'
+        type='text'
+        placeholder="Введите имя"
+        required
+        minLength={2}
+        maxLength={40}
+      />
+      <FormInput
+        value={values.email}
+        error={errors.email}
+        onChange={handleChange}
+        name='email'
+        title='E-mail'
+        type='email'
+        placeholder="Введите email"
+        pattern={EMAIL_PATTERN}
+        required
+      />
+      <FormInput
+        value={values.password}
+        error={errors.password}
+        onChange={handleChange}
+        name='password'
+        title='Пароль'
+        type='password'
+        placeholder="Введите пароль"
+        minLength={6}
+        maxLength={40}
+        required
+      />
+    </AuthPage >
   );
 }
 

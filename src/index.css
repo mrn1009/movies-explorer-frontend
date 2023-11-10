@@ -1,38 +1,12 @@
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts.css);
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.page {
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
-  background-color: #202020;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  min-width: 305px;
-  min-height: 100vh;
-}
-
 .container {
   padding: 0 70px;
   max-width: 1280px;
   margin: 0 auto;
   box-sizing: border-box;
   }
-
-.title {
-  padding-bottom: 23px;
-  border-bottom: 1px solid #dadada;
-  margin: 1px 0 0;
-  font-size: 22px;
-  line-height: normal;
-  font-weight: 400;
-  letter-spacing: -0.88px;
-}
 
 @media (max-width: 1023px) {
   .container {
@@ -43,14 +17,5 @@ html, body {
 @media (max-width: 767px) {
   .container {
     padding: 0 10px;
-  }
-  
-  .title {
-    padding-bottom: 28px;
-    margin: 0;
-    font-size: 18px;
-    line-height: normal;
-    letter-spacing: -0.72px;
-    font-weight: 400;
   }
 }
